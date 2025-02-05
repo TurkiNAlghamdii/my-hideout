@@ -1,0 +1,208 @@
+.pageContainer {
+    @apply min-h-screen flex flex-col bg-[#0f0f0f];
+  }
+  
+  .mainContent {
+    @apply flex-grow container mx-auto px-4 py-8;
+  }
+  
+  .socialsContainer {
+    @apply max-w-4xl mx-auto;
+  }
+  
+  .title {
+    @apply text-4xl font-bold text-white text-center mb-2;
+    animation: slideDown 0.5s ease-out;
+  }
+  
+  .subtitle {
+    @apply text-gray-400 text-center mb-8;
+    animation: fadeIn 0.5s ease-out 0.2s both;
+  }
+  
+  .adminControls {
+    @apply mb-8 flex justify-center;
+    animation: fadeIn 0.5s ease-out 0.3s both;
+  }
+  
+  .addButton {
+    @apply bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-all duration-300;
+  }
+  
+  .addButton:hover {
+    @apply shadow-lg shadow-blue-500/30 scale-105;
+  }
+  
+  .socialsGrid {
+    @apply grid gap-4 md:grid-cols-2 lg:grid-cols-3;
+  }
+  
+  .socialCard {
+    @apply bg-[#1f1f1f] rounded-lg p-4 transition-all duration-300;
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  .socialCard:hover {
+    @apply transform -translate-y-1 shadow-xl;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+  }
+  
+  .socialLink {
+    @apply flex items-center gap-3 text-gray-300 hover:text-white transition-colors duration-300;
+  }
+  
+  .icon {
+    @apply text-3xl transition-transform duration-300;
+  }
+  
+  .socialCard:hover .icon {
+    @apply scale-110;
+  }
+  
+  .platformName {
+    @apply text-lg font-medium;
+  }
+  
+  .adminButtons {
+    @apply mt-4 flex gap-2 opacity-0 transition-all duration-300 -translate-y-2;
+  }
+  
+  .socialCard:hover .adminButtons {
+    @apply opacity-100 translate-y-0;
+  }
+  
+  .editButton {
+    @apply bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition-all duration-300;
+  }
+  
+  .editButton:hover {
+    @apply shadow-lg shadow-yellow-500/30 scale-105;
+  }
+  
+  .deleteButton {
+    @apply bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition-all duration-300;
+  }
+  
+  .deleteButton:hover {
+    @apply shadow-lg shadow-red-500/30 scale-105;
+  }
+  
+  /* Modal Styles */
+  .modalOverlay {
+    @apply fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .modal {
+    @apply bg-[#1f1f1f] rounded-lg p-6 w-full max-w-md;
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .modalTitle {
+    @apply text-2xl font-bold mb-4 text-white text-center;
+  }
+  
+  .select {
+    @apply w-full p-2 mb-4 rounded bg-[#2f2f2f] text-white border border-gray-600 
+      focus:border-blue-500 focus:outline-none transition-all duration-300;
+  }
+  
+  .select:focus {
+    @apply shadow-lg shadow-blue-500/20;
+  }
+  
+  .input {
+    @apply w-full p-2 mb-4 rounded bg-[#2f2f2f] text-white border border-gray-600 
+      focus:border-blue-500 focus:outline-none transition-all duration-300;
+  }
+  
+  .input:focus {
+    @apply shadow-lg shadow-blue-500/20;
+  }
+  
+  .modalButtons {
+    @apply flex justify-end gap-2 mt-6;
+  }
+  
+  .saveButton {
+    @apply bg-blue-500 text-white px-4 py-2 rounded transition-all duration-300 
+      disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .saveButton:not(:disabled):hover {
+    @apply bg-blue-600 shadow-lg shadow-blue-500/30 scale-105;
+  }
+  
+  .cancelButton {
+    @apply bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition-all duration-300;
+  }
+  
+  .cancelButton:hover {
+    @apply shadow-lg shadow-gray-500/30 scale-105;
+  }
+  
+  .deleteConfirmation {
+    @apply text-gray-300 mb-6 text-center;
+  }
+  
+  .loadingContainer {
+    @apply flex justify-center items-center min-h-screen bg-[#0f0f0f];
+  }
+  
+  .loadingSpinner {
+    @apply w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full;
+    animation: spin 1s linear infinite;
+  }
+  
+  /* Keyframe Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Stagger children animations */
+  .socialsGrid > * {
+    animation: fadeIn 0.5s ease-out;
+    animation-fill-mode: both;
+  }
+  
+  .socialsGrid > *:nth-child(1) { animation-delay: 0.1s; }
+  .socialsGrid > *:nth-child(2) { animation-delay: 0.2s; }
+  .socialsGrid > *:nth-child(3) { animation-delay: 0.3s; }
+  .socialsGrid > *:nth-child(4) { animation-delay: 0.4s; }
+  .socialsGrid > *:nth-child(5) { animation-delay: 0.5s; }
+  .socialsGrid > *:nth-child(6) { animation-delay: 0.6s; }

@@ -1,0 +1,15 @@
+.container {
+    @apply min-h-screen bg-gradient-to-br from-gray-900 to-gray-800;
+}
+
+.content {
+    @apply container mx-auto px-4 py-16 max-w-4xl;
+}
+
+.title {
+    @apply text-3xl font-bold text-gray-100 mb-6;
+}
+
+.description {
+    @apply text-gray-300 text-lg;
+}

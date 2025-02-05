@@ -1,0 +1,85 @@
+.header {
+    @apply bg-[#1f1f1f]/80 backdrop-blur-md border-b border-white/10 shadow-lg;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.container {
+    @apply max-w-7xl mx-auto px-6 py-4 flex justify-between items-center;
+}
+
+.logo {
+    @apply text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r 
+    from-purple-400 to-pink-600 mr-8;
+    text-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+}
+
+.logo:hover {
+    @apply from-purple-500 to-pink-500;
+    text-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+}
+
+.nav {
+    @apply max-w-7xl mx-auto px-6 py-4 flex items-center;
+}
+
+/* Container for main navigation links */
+.navLinks {
+    @apply flex items-center gap-2 flex-1;
+}
+
+/* Container for auth buttons */
+.authButtons {
+    @apply flex items-center gap-4 ml-auto;
+}
+
+.navLink {
+    @apply text-gray-300 relative px-4 py-2 font-medium text-sm;
+}
+
+.navLink::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-600 
+    transition-all duration-300 ease-out opacity-0;
+}
+
+.navLink:hover::after {
+    @apply w-full opacity-100;
+}
+
+.navLink:hover {
+    @apply text-white;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.profileButton {
+    @apply flex items-center space-x-2 px-4 py-2 rounded-lg
+    bg-zinc-800 border border-zinc-700
+    hover:border-purple-500 transition-all duration-300
+    text-gray-300 hover:text-purple-400;
+}
+
+.signInButton, .signOutButton {
+    @apply px-6 py-2 rounded-lg font-medium text-sm
+    transition-all duration-300 ease-out
+    transform hover:scale-105 hover:shadow-lg;
+}
+
+.signInButton {
+    @apply bg-gradient-to-r from-purple-500 to-pink-600 text-white
+    hover:shadow-purple-500/25;
+}
+
+.signOutButton {
+    @apply px-6 py-2 rounded-lg font-medium text-sm
+    transition-all duration-300 ease-out
+    transform hover:scale-105 hover:shadow-lg
+    bg-gradient-to-r from-red-900 to-red-700 text-white
+    hover:shadow-red-900/25;
+}
+
+/* Optional: Add a subtle glow to the entire header on scroll */
+.header.scrolled {
+    @apply shadow-[0_4px_20px_-1px_rgba(0,0,0,0.3)];
+}

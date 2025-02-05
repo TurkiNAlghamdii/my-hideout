@@ -1,0 +1,23 @@
+.footer {
+    @apply bg-zinc-900 border-t border-zinc-800;
+}
+
+.container {
+    @apply max-w-7xl mx-auto px-6 py-8;
+}
+
+.content {
+    @apply flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0;
+}
+
+.copyright {
+    @apply text-gray-400 text-sm;
+}
+
+.links {
+    @apply flex space-x-6;
+}
+
+.link {
+    @apply text-gray-400 hover:text-purple-400 transition-colors duration-200 text-sm;
+}

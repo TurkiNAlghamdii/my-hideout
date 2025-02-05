@@ -1,0 +1,230 @@
+.pageContainer {
+  @apply min-h-screen flex flex-col bg-[#0f0f0f];
+}
+
+.mainContent {
+  @apply flex-grow container mx-auto px-4 py-8;
+}
+
+.projectsContainer {
+  @apply max-w-6xl mx-auto;
+}
+
+.title {
+  @apply text-3xl font-bold mb-8 text-white;
+  animation: slideDown 0.5s ease-out;
+}
+
+.adminControls {
+  @apply mb-6;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.addButton {
+  @apply bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-all duration-300;
+  transform-origin: center;
+}
+
+.addButton:hover {
+  @apply scale-105 shadow-lg shadow-blue-500/30;
+}
+
+.projectsGrid {
+  @apply grid gap-6 md:grid-cols-2 lg:grid-cols-3;
+}
+
+.projectCard {
+  @apply bg-[#1f1f1f] rounded-lg shadow-md overflow-hidden;
+  animation: fadeIn 0.5s ease-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.projectCard:hover {
+  @apply shadow-xl;
+  transform: translateY(-5px);
+  background: #2a2a2a;
+}
+
+.projectImage {
+  @apply w-full h-48 object-cover;
+}
+
+.projectInfo {
+  @apply p-4;
+}
+
+.projectTitle {
+  @apply text-xl font-semibold mb-2 text-white;
+  transition: color 0.3s ease;
+}
+
+.projectDescription {
+  @apply text-gray-300;
+}
+
+.projectLink {
+  @apply block mt-4 text-blue-400 hover:text-blue-300 transition-all duration-300;
+}
+
+.projectLink:hover {
+  @apply translate-x-2;
+}
+
+.adminButtons {
+  @apply mt-4 flex gap-2;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.projectCard:hover .adminButtons {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.editButton {
+  @apply bg-yellow-500 text-white px-3 py-1 rounded transition-all duration-300;
+}
+
+.editButton:hover {
+  @apply bg-yellow-600 scale-105 shadow-lg shadow-yellow-500/30;
+}
+
+.deleteButton {
+  @apply bg-red-500 text-white px-3 py-1 rounded transition-all duration-300;
+}
+
+.deleteButton:hover {
+  @apply bg-red-600 scale-105 shadow-lg shadow-red-500/30;
+}
+
+.loadingContainer {
+  @apply flex justify-center items-center min-h-screen bg-[#0f0f0f];
+}
+
+.loadingSpinner {
+  @apply w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full;
+  animation: spin 1s linear infinite;
+}
+
+.noProjects {
+  @apply text-gray-300 text-center mt-8;
+}
+
+.modalOverlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50;
+  animation: fadeIn 0.3s ease-out;
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  @apply bg-[#1f1f1f] rounded-lg p-6 w-full max-w-lg;
+  animation: slideUp 0.3s ease-out;
+}
+
+.modalTitle {
+  @apply text-2xl font-bold mb-4 text-white;
+}
+
+.input {
+  @apply w-full p-2 mb-4 rounded bg-[#2f2f2f] text-white border border-gray-600 focus:border-blue-500 focus:outline-none transition-all duration-300;
+}
+
+.input:focus {
+  @apply shadow-lg shadow-blue-500/20;
+}
+
+.textarea {
+  @apply w-full p-2 mb-4 rounded bg-[#2f2f2f] text-white border border-gray-600 focus:border-blue-500 focus:outline-none h-32 resize-none transition-all duration-300;
+}
+
+.textarea:focus {
+  @apply shadow-lg shadow-blue-500/20;
+}
+
+.fileInput {
+  @apply w-full mb-4 text-gray-300;
+}
+
+.modalButtons {
+  @apply flex justify-end gap-2 mt-4;
+}
+
+.saveButton {
+  @apply bg-blue-500 text-white px-4 py-2 rounded transition-all duration-300;
+}
+
+.saveButton:hover {
+  @apply bg-blue-600 scale-105 shadow-lg shadow-blue-500/30;
+}
+
+.cancelButton {
+  @apply bg-gray-600 text-white px-4 py-2 rounded transition-all duration-300;
+}
+
+.cancelButton:hover {
+  @apply bg-gray-700 scale-105 shadow-lg shadow-gray-500/30;
+}
+
+.uploading {
+  @apply text-blue-400 mb-2;
+}
+
+.imagePreview {
+  @apply w-full h-48 object-cover rounded mb-4;
+}
+
+.deleteConfirmation {
+  @apply text-gray-300 mb-6 text-center;
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Stagger children animations */
+.projectsGrid > * {
+  animation: fadeIn 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+.projectsGrid > *:nth-child(1) { animation-delay: 0.1s; }
+.projectsGrid > *:nth-child(2) { animation-delay: 0.2s; }
+.projectsGrid > *:nth-child(3) { animation-delay: 0.3s; }
+.projectsGrid > *:nth-child(4) { animation-delay: 0.4s; }
+.projectsGrid > *:nth-child(5) { animation-delay: 0.5s; }
+.projectsGrid > *:nth-child(6) { animation-delay: 0.6s; }
