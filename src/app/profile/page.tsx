@@ -13,9 +13,10 @@ interface Profile {
   avatar_url?: string | null;
 }
 
-const ProfilePage = () => {
+export default function ProfilePage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [session, setSession] = useState<any>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -24,119 +25,103 @@ const ProfilePage = () => {
   const [updateLoading, setUpdateLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const fetchProfile = async () => {
-    try {
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      
-      if (sessionError || !session) {
-        router.push('/signin');
-        return;
-      }
-
-      // First get the profile data
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', session.user.id)
-        .single();
-
-      if (profileError) {
-        console.log('Error fetching profile:', profileError);
-        return;
-      }
-
-      // Set initial profile without picture
-      setProfile({
-        username: profileData.username,
-        email: session.user.email || '',
-        avatar_url: null
-      });
-
-      // Try to get the profile picture
+  useEffect(() => {
+    const checkUser = async () => {
       try {
-        // First check if the file exists
-        const { data: listData } = await supabase
-          .storage
-          .from('profile-pictures')
-          .list('public');
-
-        const userFile = listData?.find(file => file.name === `${session.user.id}.png`);
+        const { data: { session } } = await supabase.auth.getSession();
+        setSession(session);
         
-        if (userFile) {
-          const { data, error } = await supabase.storage
-            .from('profile-pictures')
-            .download(`public/${session.user.id}.png`);
+        if (!session) {
+          router.push('/signin');
+          return;
+        }
+        
+        // Fetch profile data
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
 
-          if (error) {
-            throw error;
-          }
+        if (profileError) {
+          console.error('Error fetching profile:', profileError);
+        } else {
+          setProfile({
+            username: profileData?.username || 'User',
+            email: session.user.email || '',
+            avatar_url: null
+          });
 
-          if (data) {
-            // Revoke the old URL if it exists
-            if (profile?.avatar_url) {
-              URL.revokeObjectURL(profile.avatar_url);
-            }
+          // Try to get the profile picture
+          try {
+            const { data: listData } = await supabase
+              .storage
+              .from('profile-pictures')
+              .list('public');
+
+            const userFile = listData?.find(file => file.name === `${session.user.id}.png`);
             
-            // Create new URL
-            const url = URL.createObjectURL(data);
-            setProfile(prev => ({
-              ...prev!,
-              avatar_url: url
-            }));
+            if (userFile) {
+              const { data } = await supabase.storage
+                .from('profile-pictures')
+                .download(`public/${session.user.id}.png`);
+
+              if (data) {
+                const url = URL.createObjectURL(data);
+                setProfile(prev => prev ? { ...prev, avatar_url: url } : null);
+              }
+            }
+          } catch (storageError) {
+            console.error('Storage error:', storageError);
           }
         }
-      } catch (storageError) {
-        console.log('Storage error:', storageError);
-        if (storageError instanceof Error) {
-          console.log('Error message:', storageError.message);
-          console.log('Error name:', storageError.name);
-        }
+        
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error checking auth:', error);
+        router.push('/signin');
       }
-      
-    } catch (error) {
-      console.log('Error in fetchProfile:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
+
+    checkUser();
+
+    // Cleanup function
+    return () => {
+      if (profile?.avatar_url) {
+        URL.revokeObjectURL(profile.avatar_url);
+      }
+    };
+  }, [router]);
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
-      setUploading(true);
-      
       if (!event.target.files || event.target.files.length === 0) {
         return;
       }
 
+      setUploading(true);
       const file = event.target.files[0];
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        setErrorMessage('Please sign in to update your profile picture');
-        return;
-      }
-
       const filePath = `public/${session.user.id}.png`;
-      
+
       const { error } = await supabase.storage
         .from('profile-pictures')
         .upload(filePath, file, { upsert: true });
 
       if (error) {
-        setErrorMessage('Error uploading profile picture: ' + error.message);
-      } else {
-        // Revoke old URL if it exists
-        if (profile?.avatar_url) {
-          URL.revokeObjectURL(profile.avatar_url);
-        }
-        
-        // Force a fresh fetch of the profile picture
-        await fetchProfile();
+        throw error;
       }
 
+      // Refresh the profile data to show the new image
+      const { data } = await supabase.storage
+        .from('profile-pictures')
+        .download(filePath);
+
+      if (data) {
+        const url = URL.createObjectURL(data);
+        setProfile(prev => prev ? { ...prev, avatar_url: url } : null);
+      }
     } catch (error) {
-      console.error('Error in handleImageChange:', error);
-      setErrorMessage('An unexpected error occurred. Please try again.');
+      console.error('Error uploading image:', error);
     } finally {
       setUploading(false);
     }
@@ -191,10 +176,14 @@ const ProfilePage = () => {
 
   if (isLoading) {
     return (
-      <div className={styles.loadingContainer}>
-        <div className={styles.loadingSpinner}></div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
       </div>
     );
+  }
+
+  if (!session) {
+    return null;
   }
 
   return (
@@ -297,6 +286,4 @@ const ProfilePage = () => {
       <Footer />
     </div>
   );
-};
-
-export default ProfilePage;
+}
