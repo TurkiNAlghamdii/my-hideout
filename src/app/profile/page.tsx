@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '../../utils/supabaseClient';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import Image from 'next/image';
 import styles from './profile.module.css';
 
 interface Profile {
@@ -24,10 +23,6 @@ const ProfilePage = () => {
   const [newUsername, setNewUsername] = useState('');
   const [updateLoading, setUpdateLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    fetchProfile();
-  }, []);
 
   const fetchProfile = async () => {
     try {
