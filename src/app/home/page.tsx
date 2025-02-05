@@ -118,7 +118,7 @@ const HomePage = () => {
             transition={{ duration: 1, ease: "easeOut" }}
           >
             <Image
-              src="/drive.GIF"
+              src={process.env.NODE_ENV === 'production' ? '/my-hideout/drive.GIF' : '/drive.GIF'}
               alt="Dragon Animation"
               width={800}
               height={600}
