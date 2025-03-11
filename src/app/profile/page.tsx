@@ -91,7 +91,7 @@ export default function ProfilePage() {
         URL.revokeObjectURL(profile.avatar_url);
       }
     };
-  }, [router]);
+  }, [router, profile?.avatar_url]);
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
